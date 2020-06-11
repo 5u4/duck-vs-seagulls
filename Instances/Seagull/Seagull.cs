@@ -4,23 +4,30 @@ using System;
 public class Seagull : KinematicBody2D
 {
     private readonly float DELTA_STEP = 100;
+    private readonly float DEFAULT_SPAWN_X = -40;
     private float flyCooldown;
     private float width;
+    private bool reversed;
 
     [Export]
     public float gravity = 300;
     [Export]
-    public float speed = 75;
+    public float minSpeed = 45;
+    [Export]
+    public float maxSpeed = 110;
     [Export]
     public float flyHeight = 45;
     [Export]
     public float maxFlyCooldown = 30;
+    [Export]
+    public float minHeight = -65;
 
     public Vector2 velocity;
 
     public override void _Ready()
     {
         width = GetViewportRect().Size.x;
+        Initialize();
     }
 
     public override void _PhysicsProcess(float delta)
@@ -33,7 +40,20 @@ public class Seagull : KinematicBody2D
 
     public void Die()
     {
+        Initialize();
+    }
 
+    private void Initialize()
+    {
+        Random random = new Random(DateTime.Now.Millisecond);
+
+        reversed = (random.Next() & 1) == 1;
+
+        float speedRange = (float)random.NextDouble() * (maxSpeed - minSpeed);
+        velocity.x = (speedRange + minSpeed) * (reversed ? -1 : 1);
+
+        float heightRange = (float)random.NextDouble() * (minHeight);
+        Position = new Vector2(DEFAULT_SPAWN_X, heightRange - minHeight);
     }
 
     private void WrapSeagullPosition()
