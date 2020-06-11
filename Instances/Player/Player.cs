@@ -5,6 +5,7 @@ public class Player : KinematicBody2D
 {
     private readonly float EPSILON = 0.0001f;
     private readonly float DELTA_STEP = 100;
+    private readonly string ENEMY_GROUP = "Enemy";
     private int doubleJumpCount;
     private float attackDuration;
     private float attackCooldown;
@@ -31,6 +32,8 @@ public class Player : KinematicBody2D
     public float maxAttackDuration = 15;
     [Export]
     public float attackFinishSpeedReduction = 0.1f;
+    [Export]
+    public float killCooldownReduction = 0.3f;
 
     public Vector2 velocity;
     public bool isAttacking;
@@ -47,6 +50,19 @@ public class Player : KinematicBody2D
         HandleJump();
         HandleAttack(delta);
         HandleMovement();
+    }
+
+    public void _on_Area2D_body_entered(KinematicBody2D body)
+    {
+        if (!body.IsInGroup(ENEMY_GROUP)) return;
+        (body as Seagull).Die();
+        RefreshAfterKill();
+    }
+
+    private void RefreshAfterKill()
+    {
+        attackCooldown -= maxAttackCooldown * killCooldownReduction;
+        doubleJumpCount = maxDoubleJumpCount;
     }
 
     private void HandleJump()

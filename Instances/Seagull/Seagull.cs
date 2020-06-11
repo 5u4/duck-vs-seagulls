@@ -24,6 +24,11 @@ public class Seagull : KinematicBody2D
         HandleMovement();
     }
 
+    public void Die()
+    {
+
+    }
+
     private void ApplyGravity(float delta)
     {
         velocity.y += gravity * delta;
