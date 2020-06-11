@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Instances\AnimatedSprite.cs" />
     <Compile Include="Instances\Player.cs" />
+    <Compile Include="Instances\Seagull.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
