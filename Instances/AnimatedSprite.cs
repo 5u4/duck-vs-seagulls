@@ -21,7 +21,7 @@ public class AnimatedSprite : Godot.AnimatedSprite
             animation = "run";
         }
 
-        if (body.isJumping)
+        if (body.IsJumping())
         {
             if (body.velocity.y < 0f)
             {
