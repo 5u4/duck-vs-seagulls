@@ -8,7 +8,8 @@ public class Seagull : KinematicBody2D
     private float flyCooldown;
     private float width;
     private bool reversed;
-    private PackedScene bloodParticleScene;
+    private float poopDuration;
+    private float poopInterval;
 
     [Export]
     public float gravity = 300;
@@ -22,12 +23,21 @@ public class Seagull : KinematicBody2D
     public float maxFlyCooldown = 30;
     [Export]
     public float minHeight = -65;
+    [Export]
+    public float acceleration = 20;
+    [Export]
+    public PackedScene bloodParticleScene;
+    [Export]
+    public PackedScene fecesScene;
+    [Export]
+    public float minPoopDuration = 800;
+    [Export]
+    public float maxPoopDuration = 1000;
 
     public Vector2 velocity;
 
     public override void _Ready()
     {
-        bloodParticleScene = (PackedScene)GD.Load("res://Particles/BloodParticle.tscn");
         width = GetViewportRect().Size.x;
         Initialize();
     }
@@ -37,6 +47,8 @@ public class Seagull : KinematicBody2D
         WrapSeagullPosition();
         ApplyGravity(delta);
         HandleFly(delta);
+        HandleFlyForward(delta);
+        HandlePoop(delta);
         HandleMovement();
     }
 
@@ -57,6 +69,22 @@ public class Seagull : KinematicBody2D
 
         float heightRange = (float)random.NextDouble() * (minHeight);
         Position = new Vector2(DEFAULT_SPAWN_X, heightRange - minHeight);
+
+        float poopDurationRange = (float)random.NextDouble() *
+            (maxPoopDuration - minPoopDuration);
+        poopInterval = poopDuration + minPoopDuration;
+    }
+
+    private void HandlePoop(float delta)
+    {
+        poopDuration -= delta * DELTA_STEP;
+        if (poopDuration > 0) return;
+
+        Feces feces = (Feces)fecesScene.Instance();
+        feces.velocity.x = velocity.x;
+        feces.Position = new Vector2(Position);
+        GetTree().Root.AddChild(feces);
+        poopDuration = poopInterval;
     }
 
     private void EmitBlood()
@@ -66,6 +94,12 @@ public class Seagull : KinematicBody2D
         bloodParticle.Emitting = true;
         bloodParticle.OneShot = true;
         GetTree().Root.AddChild(bloodParticle);
+    }
+
+    private void HandleFlyForward(float delta)
+    {
+        if (Mathf.Abs(velocity.x) >= minSpeed) return;
+        velocity.x += (reversed ? -1 : 1) * acceleration * delta;
     }
 
     private void WrapSeagullPosition()

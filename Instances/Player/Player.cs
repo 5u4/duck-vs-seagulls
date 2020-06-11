@@ -6,10 +6,12 @@ public class Player : KinematicBody2D
     private readonly float EPSILON = 0.0001f;
     private readonly float DELTA_STEP = 100;
     private readonly string ENEMY_GROUP = "Enemy";
+    private readonly string FECES_GROUP = "Feces";
     private int doubleJumpCount;
     private float attackDuration;
     private float attackCooldown;
     private float width;
+    private bool lost;
 
     [Export]
     public float gravity = 400;
@@ -61,9 +63,15 @@ public class Player : KinematicBody2D
 
     public void _on_Area2D_body_entered(KinematicBody2D body)
     {
-        if (!body.IsInGroup(ENEMY_GROUP)) return;
-        (body as Seagull).Die();
-        RefreshAfterKill();
+        if (body.IsInGroup(ENEMY_GROUP))
+        {
+            (body as Seagull).Die();
+            RefreshAfterKill();
+        }
+        else if (body.IsInGroup(FECES_GROUP))
+        {
+            lost = true;
+        }
     }
 
     private void WrapPlayerPosition()
@@ -86,7 +94,7 @@ public class Player : KinematicBody2D
 
     private void HandleJump()
     {
-        if (!Input.IsActionJustPressed("ui_up") || isAttacking) return;
+        if (!Input.IsActionJustPressed("ui_up") || isAttacking || lost) return;
 
         bool isJumping = IsJumping();
 
@@ -111,14 +119,14 @@ public class Player : KinematicBody2D
 
     private void ApplyGravity(float delta)
     {
-        if (isAttacking) return;
+        if (isAttacking && !lost) return;
         velocity.y += (velocity.y < 0 ? gravity : gravity * landingSpeedReduction) * delta;
     }
 
     private void GetHorizontalInput()
     {
         if (isAttacking) return;
-        float direction = Input.GetActionStrength("ui_right") - 
+        float direction = lost ? 0 : Input.GetActionStrength("ui_right") - 
                 Input.GetActionStrength("ui_left");
         velocity.x = Mathf.Abs(direction) > EPSILON
             ? Mathf.Lerp(velocity.x, direction * speed, acceleration)
@@ -144,7 +152,7 @@ public class Player : KinematicBody2D
         }
 
         // Attack not triggered
-        if (!Input.IsMouseButtonPressed((int)ButtonList.Left) || attackCooldown > 0) return;
+        if (!Input.IsMouseButtonPressed((int)ButtonList.Left) || attackCooldown > 0 || lost) return;
 
         // Initiate attack
         isAttacking = true;
