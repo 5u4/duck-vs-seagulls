@@ -1,0 +1,56 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://Assets/Player/lizard_m_idle_anim_f0.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Player/lizard_m_idle_anim_f1.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Player/lizard_m_idle_anim_f2.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Player/lizard_m_idle_anim_f3.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Player/lizard_m_run_anim_f0.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Player/lizard_m_run_anim_f2.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Player/lizard_m_run_anim_f3.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Player/lizard_m_hit_anim_f0.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Player/lizard_m_run_anim_f1.png" type="Texture" id=9]
+[ext_resource path="res://Instances/AnimatedSprite.cs" type="Script" id=10]
+[ext_resource path="res://Instances/Player.cs" type="Script" id=11]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 6, 8 )
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 5 ), ExtResource( 9 ), ExtResource( 6 ), ExtResource( 7 ) ],
+"loop": true,
+"name": "run",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 1 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 5 ) ],
+"loop": true,
+"name": "jump",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 8 ) ],
+"loop": true,
+"name": "hit",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 6 ) ],
+"loop": true,
+"name": "fall",
+"speed": 5.0
+} ]
+
+[node name="Player" type="KinematicBody2D"]
+script = ExtResource( 11 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 6 )
+shape = SubResource( 2 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 1 )
+animation = "idle"
+script = ExtResource( 10 )
