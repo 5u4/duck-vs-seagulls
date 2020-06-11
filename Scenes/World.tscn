@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Instances/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Instances/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Tilesets/SandTileMap.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Tilesets/SkyTileMap.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Instances/Seagull.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Instances/Seagull/Seagull.tscn" type="PackedScene" id=4]
 
 [node name="World" type="Node2D"]
 
@@ -18,4 +18,3 @@ position = Vector2( 160, 136 )
 
 [node name="Seagull" parent="." instance=ExtResource( 4 )]
 position = Vector2( 104, 48 )
-flyHeight = 45.0
