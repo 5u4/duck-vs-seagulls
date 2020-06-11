@@ -9,6 +9,7 @@ public class Player : KinematicBody2D
     private int doubleJumpCount;
     private float attackDuration;
     private float attackCooldown;
+    private float width;
 
     [Export]
     public float gravity = 400;
@@ -43,8 +44,14 @@ public class Player : KinematicBody2D
         return !IsOnFloor();
     }
 
+    public override void _Ready()
+    {
+        width = GetViewportRect().Size.x;
+    }
+
     public override void _PhysicsProcess(float delta)
     {
+        WrapPlayerPosition();
         GetHorizontalInput();
         ApplyGravity(delta);
         HandleJump();
@@ -57,6 +64,18 @@ public class Player : KinematicBody2D
         if (!body.IsInGroup(ENEMY_GROUP)) return;
         (body as Seagull).Die();
         RefreshAfterKill();
+    }
+
+    private void WrapPlayerPosition()
+    {
+        if (Position.x > width)
+        {
+            Position = new Vector2(0, Position.y);
+        }
+        else if (Position.x < 0)
+        {
+            Position = new Vector2(width, Position.y);
+        }
     }
 
     private void RefreshAfterKill()

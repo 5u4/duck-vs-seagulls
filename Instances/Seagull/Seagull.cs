@@ -5,6 +5,7 @@ public class Seagull : KinematicBody2D
 {
     private readonly float DELTA_STEP = 100;
     private float flyCooldown;
+    private float width;
 
     [Export]
     public float gravity = 300;
@@ -17,8 +18,14 @@ public class Seagull : KinematicBody2D
 
     public Vector2 velocity;
 
+    public override void _Ready()
+    {
+        width = GetViewportRect().Size.x;
+    }
+
     public override void _PhysicsProcess(float delta)
     {
+        WrapSeagullPosition();
         ApplyGravity(delta);
         HandleFly(delta);
         HandleMovement();
@@ -27,6 +34,18 @@ public class Seagull : KinematicBody2D
     public void Die()
     {
 
+    }
+
+    private void WrapSeagullPosition()
+    {
+        if (Position.x > width)
+        {
+            Position = new Vector2(0, Position.y);
+        }
+        else if (Position.x < 0)
+        {
+            Position = new Vector2(width, Position.y);
+        }
     }
 
     private void ApplyGravity(float delta)
