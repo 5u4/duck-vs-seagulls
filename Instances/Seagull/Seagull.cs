@@ -31,7 +31,7 @@ public class Seagull : KinematicBody2D
 
     private void HandleMovement()
     {
-        velocity = MoveAndSlide(velocity, Vector2.Up);
+        velocity = MoveAndSlideWithSnap(velocity, Vector2.Up);
     }
 
     private void HandleFly(float delta)

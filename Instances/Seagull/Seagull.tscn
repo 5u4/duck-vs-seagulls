@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Instances/Seagull/Seagull.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Seagull/seagull.png" type="Texture" id=2]
+[ext_resource path="res://Instances/Seagull/SeagullAnimatedSprite.cs" type="Script" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 8, 4 )
@@ -36,3 +37,4 @@ shape = SubResource( 1 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 4 )
 animation = "fall"
+script = ExtResource( 3 )
