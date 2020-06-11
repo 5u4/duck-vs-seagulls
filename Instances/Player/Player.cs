@@ -12,6 +12,7 @@ public class Player : KinematicBody2D
     private float attackCooldown;
     private float width;
     private bool lost;
+    private Camera2D camera;
 
     [Export]
     public float gravity = 400;
@@ -37,6 +38,10 @@ public class Player : KinematicBody2D
     public float attackFinishSpeedReduction = 0.1f;
     [Export]
     public float killCooldownReduction = 0.3f;
+    [Export]
+    public float cameraLookAheadOffset = 0.3f;
+    [Export]
+    public NodePath cameraPath;
 
     public Vector2 velocity;
     public bool isAttacking;
@@ -49,6 +54,7 @@ public class Player : KinematicBody2D
     public override void _Ready()
     {
         width = GetViewportRect().Size.x;
+        camera = GetNode<Camera2D>(cameraPath);
     }
 
     public override void _PhysicsProcess(float delta)
@@ -59,6 +65,7 @@ public class Player : KinematicBody2D
         HandleJump();
         HandleAttack(delta);
         HandleMovement();
+        HandleCameraLookAhead();
     }
 
     public void _on_Area2D_body_entered(KinematicBody2D body)
@@ -72,6 +79,11 @@ public class Player : KinematicBody2D
         {
             lost = true;
         }
+    }
+
+    private void HandleCameraLookAhead()
+    {
+        camera.OffsetV = Math.Sign(velocity.y) * cameraLookAheadOffset;
     }
 
     private void WrapPlayerPosition()
