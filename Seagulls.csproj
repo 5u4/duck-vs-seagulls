@@ -57,6 +57,7 @@
     <Compile Include="Instances\Player\Player.cs" />
     <Compile Include="Instances\Seagull\Seagull.cs" />
     <Compile Include="Instances\Seagull\SeagullAnimatedSprite.cs" />
+    <Compile Include="Particles\GeneralParticle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

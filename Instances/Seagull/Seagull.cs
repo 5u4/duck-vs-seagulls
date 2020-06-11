@@ -8,6 +8,7 @@ public class Seagull : KinematicBody2D
     private float flyCooldown;
     private float width;
     private bool reversed;
+    private PackedScene bloodParticleScene;
 
     [Export]
     public float gravity = 300;
@@ -26,6 +27,7 @@ public class Seagull : KinematicBody2D
 
     public override void _Ready()
     {
+        bloodParticleScene = (PackedScene)GD.Load("res://Particles/BloodParticle.tscn");
         width = GetViewportRect().Size.x;
         Initialize();
     }
@@ -40,7 +42,17 @@ public class Seagull : KinematicBody2D
 
     public void Die()
     {
+        EmitBlood();
         Initialize();
+    }
+
+    private void EmitBlood()
+    {
+        CPUParticles2D bloodParticle = (CPUParticles2D)bloodParticleScene.Instance();
+        bloodParticle.Position = new Vector2(Position);
+        bloodParticle.Emitting = true;
+        bloodParticle.OneShot = true;
+        GetTree().Root.AddChild(bloodParticle);
     }
 
     private void Initialize()
