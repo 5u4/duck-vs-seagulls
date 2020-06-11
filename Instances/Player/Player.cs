@@ -103,6 +103,8 @@ public class Player : KinematicBody2D
             velocity.x *= attackFinishSpeedReduction;
             velocity.y *= attackFinishSpeedReduction;
             Rotation = 0;
+            SetCollisionMaskBit(1, true);
+            SetCollisionLayerBit(1, true);
             return;
         }
 
@@ -116,5 +118,7 @@ public class Player : KinematicBody2D
         Vector2 mousePosition = GetGlobalMousePosition();
         LookAt(mousePosition);
         velocity = Position.DirectionTo(mousePosition) * attackSpeed;
+        SetCollisionMaskBit(1, false);
+        SetCollisionLayerBit(1, false);
     }
 }
