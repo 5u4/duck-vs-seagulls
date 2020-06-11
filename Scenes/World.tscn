@@ -17,9 +17,10 @@ tile_data = PoolIntArray( 1376256, 0, 0, 1376257, 2, 0, 1376258, 1, 0, 1376259, 
 [node name="SeagullGenerator" type="Node2D" parent="."]
 script = ExtResource( 5 )
 seagullScene = ExtResource( 4 )
+playerPath = NodePath("../Player")
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 192, 80 )
+position = Vector2( 168, 152 )
 cameraPath = NodePath("Camera2D")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]

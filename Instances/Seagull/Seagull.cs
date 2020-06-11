@@ -7,9 +7,12 @@ public class Seagull : KinematicBody2D
     private readonly float DEFAULT_SPAWN_X = -40;
     private float flyCooldown;
     private float width;
+    private float height;
     private bool reversed;
     private float poopDuration;
     private float poopInterval;
+    private float difficulty;
+    private Node2D tracker;
 
     [Export]
     public float gravity = 300;
@@ -22,15 +25,13 @@ public class Seagull : KinematicBody2D
     [Export]
     public float maxFlyCooldown = 30;
     [Export]
-    public float minHeight = -65;
-    [Export]
     public float acceleration = 20;
     [Export]
     public PackedScene bloodParticleScene;
     [Export]
     public PackedScene fecesScene;
     [Export]
-    public float minPoopDuration = 800;
+    public float minPoopDuration = 400;
     [Export]
     public float maxPoopDuration = 1000;
 
@@ -39,12 +40,12 @@ public class Seagull : KinematicBody2D
     public override void _Ready()
     {
         width = GetViewportRect().Size.x;
+        height = GetViewportRect().Size.y;
         Initialize();
     }
 
     public override void _PhysicsProcess(float delta)
     {
-        WrapSeagullPosition();
         ApplyGravity(delta);
         HandleFly(delta);
         HandleFlyForward(delta);
@@ -52,10 +53,16 @@ public class Seagull : KinematicBody2D
         HandleMovement();
     }
 
+    public void _on_VisibilityNotifier2D_screen_exited()
+    {
+        Initialize();
+    }
+
     public void Die()
     {
         EmitBlood();
         Initialize();
+        difficulty -= 50;
     }
 
     public void Initialize()
@@ -67,12 +74,19 @@ public class Seagull : KinematicBody2D
         float speedRange = (float)random.NextDouble() * (maxSpeed - minSpeed);
         velocity.x = (speedRange + minSpeed) * (reversed ? -1 : 1);
 
-        float heightRange = (float)random.NextDouble() * (minHeight);
-        Position = new Vector2(DEFAULT_SPAWN_X, heightRange - minHeight);
+        float heightY = (float)random.NextDouble() * height + 
+            tracker.Position.y - height;
+        Position = new Vector2(DEFAULT_SPAWN_X, Mathf.Min(96, heightY));
 
         float poopDurationRange = (float)random.NextDouble() *
             (maxPoopDuration - minPoopDuration);
-        poopInterval = poopDuration + minPoopDuration;
+        float interval = poopDuration + minPoopDuration;
+        poopInterval = Math.Max(interval - difficulty, minPoopDuration);
+    }
+
+    public void SetTracker(Node2D tracker)
+    {
+        this.tracker = tracker;
     }
 
     private void HandlePoop(float delta)
@@ -100,18 +114,6 @@ public class Seagull : KinematicBody2D
     {
         if (Mathf.Abs(velocity.x) >= minSpeed) return;
         velocity.x += (reversed ? -1 : 1) * acceleration * delta;
-    }
-
-    private void WrapSeagullPosition()
-    {
-        if (Position.x > width)
-        {
-            Position = new Vector2(0, Position.y);
-        }
-        else if (Position.x < 0)
-        {
-            Position = new Vector2(width, Position.y);
-        }
     }
 
     private void ApplyGravity(float delta)

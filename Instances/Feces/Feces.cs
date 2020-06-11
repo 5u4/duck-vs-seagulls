@@ -50,6 +50,8 @@ public class Feces : KinematicBody2D
         velocity.x = 0;
         sprite.Play("land");
         land = true;
+        CollisionShape2D collision = GetNode<CollisionShape2D>("CollisionShape2D");
+        collision.Disabled = true;
     }
 
     private void HandleMovement()
