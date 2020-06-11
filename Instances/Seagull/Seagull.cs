@@ -46,16 +46,7 @@ public class Seagull : KinematicBody2D
         Initialize();
     }
 
-    private void EmitBlood()
-    {
-        CPUParticles2D bloodParticle = (CPUParticles2D)bloodParticleScene.Instance();
-        bloodParticle.Position = new Vector2(Position);
-        bloodParticle.Emitting = true;
-        bloodParticle.OneShot = true;
-        GetTree().Root.AddChild(bloodParticle);
-    }
-
-    private void Initialize()
+    public void Initialize()
     {
         Random random = new Random(DateTime.Now.Millisecond);
 
@@ -66,6 +57,15 @@ public class Seagull : KinematicBody2D
 
         float heightRange = (float)random.NextDouble() * (minHeight);
         Position = new Vector2(DEFAULT_SPAWN_X, heightRange - minHeight);
+    }
+
+    private void EmitBlood()
+    {
+        CPUParticles2D bloodParticle = (CPUParticles2D)bloodParticleScene.Instance();
+        bloodParticle.Position = new Vector2(Position);
+        bloodParticle.Emitting = true;
+        bloodParticle.OneShot = true;
+        GetTree().Root.AddChild(bloodParticle);
     }
 
     private void WrapSeagullPosition()
