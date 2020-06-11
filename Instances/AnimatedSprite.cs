@@ -14,22 +14,32 @@ public class AnimatedSprite : Godot.AnimatedSprite
 
     public override void _Process(float delta)
     {
-        string animation = "idle";
+        HandleHorizontalFlip();
+        Play(ComputeAnimationState());
+    }
 
-        if (Mathf.Abs(body.velocity.x) > RUNNING_THRESHOLD)
+    private string ComputeAnimationState()
+    {
+        if (body.isAttacking) return "attack";
+
+        bool isJumping = body.IsJumping();
+
+        if (isJumping)
         {
-            animation = "run";
+            if (body.velocity.y < 0f) return "jump";
+            if (body.velocity.y > 0f) return "fall";
+            return null;
         }
 
-        if (body.IsJumping())
+        return Mathf.Abs(body.velocity.x) > RUNNING_THRESHOLD ? "run" : "idle";
+    }
+
+    private void HandleHorizontalFlip()
+    {
+        if (body.isAttacking)
         {
-            if (body.velocity.y < 0f)
-            {
-                animation = "jump";
-            } else if (body.velocity.y > 0f)
-            {
-                animation = "fall";
-            }
+            FlipH = false;
+            return;
         }
 
         int facing = Math.Sign(body.velocity.x);
@@ -37,7 +47,5 @@ public class AnimatedSprite : Godot.AnimatedSprite
         {
             FlipH = facing != 1;
         }
-
-        Play(animation);
     }
 }
