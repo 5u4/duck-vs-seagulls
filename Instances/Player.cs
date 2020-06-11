@@ -3,7 +3,6 @@ using System;
 
 public class Player : KinematicBody2D
 {
-    private Vector2 velocity;
     private readonly float EPSILON = 0.0001f;
 
     [Export]
@@ -14,6 +13,8 @@ public class Player : KinematicBody2D
     public float acceleration = 0.25f;
     [Export]
     public float friction = 0.1f;
+    public Vector2 velocity;
+    public bool isJumping;
 
     public override void _PhysicsProcess(float delta)
     {
