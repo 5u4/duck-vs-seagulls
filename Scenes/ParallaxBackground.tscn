@@ -5,17 +5,17 @@ colors = PoolColorArray( 0.352941, 0.54902, 1, 1, 0.509804, 0.705882, 1, 1 )
 
 [sub_resource type="GradientTexture" id=2]
 gradient = SubResource( 1 )
-width = 340
+width = 344
 
 [node name="ParallaxBackground" type="ParallaxBackground"]
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="."]
 
 [node name="TextureRect" type="TextureRect" parent="ParallaxLayer"]
-margin_left = 340.0
+margin_left = 344.0
 margin_top = -824.0
-margin_right = 1364.0
-margin_bottom = -484.0
+margin_right = 1368.0
+margin_bottom = -480.0
 rect_rotation = 90.0
 texture = SubResource( 2 )
 expand = true

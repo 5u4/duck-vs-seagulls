@@ -73,6 +73,7 @@ public class Player : KinematicBody2D
         if (body.IsInGroup(ENEMY_GROUP))
         {
             (body as Seagull).Die();
+            camera.Shake();
             RefreshAfterKill();
         }
         else if (body.IsInGroup(FECES_GROUP))
