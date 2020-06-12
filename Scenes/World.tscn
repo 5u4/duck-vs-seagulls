@@ -1,15 +1,16 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Instances/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Tilesets/SandTileMap.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/Camera2D.cs" type="Script" id=3]
 [ext_resource path="res://Instances/Seagull/Seagull.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scenes/SeagullGenerator.cs" type="Script" id=5]
-[ext_resource path="res://Scenes/ParallaxBackground.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/SkyBackground.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/SpaceBackground.tscn" type="PackedScene" id=7]
 
 [node name="World" type="Node2D"]
 
-[node name="ParallaxBackground" parent="." instance=ExtResource( 6 )]
+[node name="SkyBackground" parent="." instance=ExtResource( 6 )]
 
 [node name="SandTileMap" parent="." instance=ExtResource( 2 )]
 z_index = 10
@@ -22,6 +23,7 @@ playerPath = NodePath("../Player")
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 170, 152 )
+z_index = 1
 cameraPath = NodePath("Camera2D")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
@@ -33,3 +35,8 @@ smoothing_speed = 2.0
 drag_margin_bottom = 0.7
 editor_draw_drag_margin = true
 script = ExtResource( 3 )
+
+[node name="Node2D" type="Node2D" parent="Player"]
+z_index = -2
+
+[node name="SpaceBackground" parent="Player/Node2D" instance=ExtResource( 7 )]
