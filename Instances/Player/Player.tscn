@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Instances/Player/AnimatedSprite.cs" type="Script" id=1]
 [ext_resource path="res://Instances/Player/Player.cs" type="Script" id=2]
@@ -57,7 +57,11 @@ region = Rect2( 0, 64, 16, 16 )
 atlas = ExtResource( 3 )
 region = Rect2( 16, 64, 16, 16 )
 
-[sub_resource type="SpriteFrames" id=14]
+[sub_resource type="AtlasTexture" id=14]
+atlas = ExtResource( 3 )
+region = Rect2( 0, 96, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=15]
 animations = [ {
 "frames": [ SubResource( 3 ), SubResource( 4 ) ],
 "loop": true,
@@ -93,6 +97,11 @@ animations = [ {
 "loop": true,
 "name": "preattack",
 "speed": 5.0
+}, {
+"frames": [ SubResource( 14 ) ],
+"loop": true,
+"name": "dead",
+"speed": 5.0
 } ]
 
 [node name="Player" type="KinematicBody2D"]
@@ -111,7 +120,7 @@ position = Vector2( -1, 1 )
 shape = SubResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-frames = SubResource( 14 )
+frames = SubResource( 15 )
 animation = "idle"
 script = ExtResource( 1 )
 

@@ -11,11 +11,11 @@ public class Player : KinematicBody2D
     private float attackDuration;
     private float attackCooldown;
     private float width;
-    private bool lost;
     private Camera2D camera;
     private AudioStreamPlayer2D jumpAudio;
     private AudioStreamPlayer2D attackAudio;
     private AudioStreamPlayer2D poopAudio;
+    private bool lostSignalEmitted;
 
     [Export]
     public float gravity = 400;
@@ -40,14 +40,17 @@ public class Player : KinematicBody2D
     [Export]
     public float attackFinishSpeedReduction = 0.1f;
     [Export]
-    public float killCooldownReduction = 0.3f;
+    public float killCooldownReduction = 0.6f;
     [Export]
     public float cameraLookAheadOffset = 0.3f;
     [Export]
     public NodePath cameraPath;
+    [Signal]
+    public delegate void DeadSignal();
 
     public Vector2 velocity;
     public bool isAttacking;
+    public bool lost;
 
     public bool IsJumping()
     {
@@ -72,6 +75,7 @@ public class Player : KinematicBody2D
         HandleAttack(delta);
         HandleMovement();
         HandleCameraLookAhead();
+        HandleLost();
     }
 
     public void _on_Area2D_body_entered(KinematicBody2D body)
@@ -110,6 +114,13 @@ public class Player : KinematicBody2D
     {
         attackCooldown -= maxAttackCooldown * killCooldownReduction;
         doubleJumpCount = maxDoubleJumpCount;
+    }
+
+    private void HandleLost()
+    {
+        if (!lost || !IsOnFloor() || lostSignalEmitted) return;
+        EmitSignal(nameof(DeadSignal));
+        lostSignalEmitted = true;
     }
 
     private void HandleJump()
@@ -174,7 +185,7 @@ public class Player : KinematicBody2D
         }
 
         // Attack not triggered
-        if (!Input.IsMouseButtonPressed((int)ButtonList.Left) || attackCooldown > 0 || lost) return;
+        if (!Input.IsActionJustPressed("ui_attack") || attackCooldown > 0 || lost) return;
 
         // Initiate attack
         isAttacking = true;

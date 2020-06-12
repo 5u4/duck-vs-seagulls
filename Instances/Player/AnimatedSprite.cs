@@ -20,6 +20,7 @@ public class AnimatedSprite : Godot.AnimatedSprite
 
     private string ComputeAnimationState()
     {
+        if (body.lost) return "dead";
         if (body.isAttacking) return "attack";
 
         bool isJumping = body.IsJumping();
