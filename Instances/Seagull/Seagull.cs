@@ -4,7 +4,7 @@ using System;
 public class Seagull : KinematicBody2D
 {
     private readonly float DELTA_STEP = 100;
-    private readonly float DEFAULT_SPAWN_X = -40;
+    private readonly float DEFAULT_SPAWN_X = -100;
     private float flyCooldown;
     private float width;
     private float height;
@@ -76,7 +76,9 @@ public class Seagull : KinematicBody2D
 
         float heightY = (float)random.NextDouble() * height + 
             tracker.Position.y - height;
-        Position = new Vector2(DEFAULT_SPAWN_X, Mathf.Min(96, heightY));
+        float x = (float)random.NextDouble() * DEFAULT_SPAWN_X * 
+            (reversed ? -1 : 1) + (reversed ? width : 0);
+        Position = new Vector2(x, Mathf.Min(96, heightY));
 
         float poopDurationRange = (float)random.NextDouble() *
             (maxPoopDuration - minPoopDuration);
