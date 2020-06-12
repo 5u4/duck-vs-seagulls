@@ -13,6 +13,9 @@ public class Player : KinematicBody2D
     private float width;
     private bool lost;
     private Camera2D camera;
+    private AudioStreamPlayer2D jumpAudio;
+    private AudioStreamPlayer2D attackAudio;
+    private AudioStreamPlayer2D poopAudio;
 
     [Export]
     public float gravity = 400;
@@ -55,6 +58,9 @@ public class Player : KinematicBody2D
     {
         width = GetViewportRect().Size.x;
         camera = GetNode<Camera2D>(cameraPath);
+        jumpAudio = GetNode<AudioStreamPlayer2D>("JumpAudio");
+        attackAudio = GetNode<AudioStreamPlayer2D>("AttackAudio");
+        poopAudio = GetNode<AudioStreamPlayer2D>("PoopAudio");
     }
 
     public override void _PhysicsProcess(float delta)
@@ -79,6 +85,7 @@ public class Player : KinematicBody2D
         else if (body.IsInGroup(FECES_GROUP))
         {
             lost = true;
+            poopAudio.Play();
         }
     }
 
@@ -115,6 +122,7 @@ public class Player : KinematicBody2D
         {
             velocity.y = -jumpHeight;
             doubleJumpCount = maxDoubleJumpCount;
+            jumpAudio.Play();
             return;
         }
 
@@ -122,6 +130,7 @@ public class Player : KinematicBody2D
         {
             velocity.y = -jumpHeight;
             doubleJumpCount--;
+            jumpAudio.Play();
         }
     }
 
@@ -176,5 +185,6 @@ public class Player : KinematicBody2D
         velocity = Position.DirectionTo(mousePosition) * attackSpeed;
         SetCollisionMaskBit(1, false);
         SetCollisionLayerBit(1, false);
+        attackAudio.Play();
     }
 }
