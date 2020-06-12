@@ -64,6 +64,7 @@
     <Compile Include="Scenes\SeagullGenerator.cs" />
     <Compile Include="Scenes\Title.cs" />
     <Compile Include="Scenes\World.cs" />
+    <Compile Include="Singletons\Score.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Instances\Feces\" />

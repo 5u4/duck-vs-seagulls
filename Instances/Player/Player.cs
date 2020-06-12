@@ -76,6 +76,7 @@ public class Player : KinematicBody2D
         HandleMovement();
         HandleCameraLookAhead();
         HandleLost();
+        CountMaxHeight();
     }
 
     public void _on_Area2D_body_entered(KinematicBody2D body)
@@ -84,6 +85,7 @@ public class Player : KinematicBody2D
         {
             (body as Seagull).Die();
             camera.Shake();
+            Score.instance.KillCount += 1;
             RefreshAfterKill();
         }
         else if (body.IsInGroup(FECES_GROUP))
@@ -91,6 +93,12 @@ public class Player : KinematicBody2D
             lost = true;
             poopAudio.Play();
         }
+    }
+
+    private void CountMaxHeight()
+    {
+        int height = 168 - (int)Position.y;
+        Score.instance.MaxHeight = Math.Max(Score.instance.MaxHeight, height);
     }
 
     private void HandleCameraLookAhead()

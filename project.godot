@@ -19,6 +19,10 @@ config/name="Seagulls"
 run/main_scene="res://Scenes/Title.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Score="*res://Singletons/Score.tscn"
+
 [display]
 
 window/size/width=344

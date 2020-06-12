@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Instances/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Tilesets/SandTileMap.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Scenes/SpaceBackground.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Scenes/World.cs" type="Script" id=8]
 [ext_resource path="res://Assets/UI/Monogram.tres" type="DynamicFont" id=9]
+[ext_resource path="res://Assets/UI/MonogramText.tres" type="DynamicFont" id=10]
 
 [node name="World" type="Node2D"]
 script = ExtResource( 8 )
@@ -46,19 +47,23 @@ z_index = -2
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer"]
+[node name="EndContainer" type="CenterContainer" parent="CanvasLayer"]
+visible = false
 margin_right = 344.0
-margin_bottom = 64.0
+margin_bottom = 120.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Restart" type="Button" parent="CanvasLayer/CenterContainer"]
-visible = false
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/EndContainer"]
 margin_left = 124.0
-margin_top = 16.0
+margin_top = 29.0
 margin_right = 220.0
-margin_bottom = 48.0
+margin_bottom = 91.0
+
+[node name="Restart" type="Button" parent="CanvasLayer/EndContainer/VBoxContainer"]
+margin_right = 96.0
+margin_bottom = 32.0
 focus_mode = 0
 custom_fonts/font = ExtResource( 9 )
 enabled_focus_mode = 0
@@ -67,5 +72,18 @@ flat = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="KillCount" type="Label" parent="CanvasLayer/EndContainer/VBoxContainer"]
+margin_top = 36.0
+margin_right = 96.0
+margin_bottom = 62.0
+custom_fonts/font = ExtResource( 10 )
+align = 1
+
+[node name="MaxHeight" type="Label" parent="CanvasLayer/EndContainer/VBoxContainer"]
+margin_right = 40.0
+margin_bottom = 14.0
+custom_fonts/font = ExtResource( 10 )
+align = 1
 [connection signal="DeadSignal" from="Player" to="." method="_on_Player_DeadSignal"]
-[connection signal="pressed" from="CanvasLayer/CenterContainer/Restart" to="." method="_on_Restart_pressed"]
+[connection signal="pressed" from="CanvasLayer/EndContainer/VBoxContainer/Restart" to="." method="_on_Restart_pressed"]
