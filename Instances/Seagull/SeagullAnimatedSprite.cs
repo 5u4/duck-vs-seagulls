@@ -18,8 +18,9 @@ public class SeagullAnimatedSprite : AnimatedSprite
 
     private string ComputeAnimationState()
     {
-        if (body.velocity.y < 0f) return "fly";
-        if (body.velocity.y > 0f) return "fall";
+        string poopPrefix = body.poopDuration < body.poopInterval / 4 ? "poop" : "";
+        if (body.velocity.y < 0f) return poopPrefix + "fly";
+        if (body.velocity.y > 0f) return poopPrefix + "fall";
         return null;
     }
 

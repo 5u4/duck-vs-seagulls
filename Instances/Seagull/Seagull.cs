@@ -9,8 +9,6 @@ public class Seagull : KinematicBody2D
     private float width;
     private float height;
     private bool reversed;
-    private float poopDuration;
-    private float poopInterval;
     private float difficulty;
     private Node2D tracker;
 
@@ -36,6 +34,8 @@ public class Seagull : KinematicBody2D
     public float maxPoopDuration = 1000;
 
     public Vector2 velocity;
+    public float poopDuration;
+    public float poopInterval;
 
     public override void _Ready()
     {
